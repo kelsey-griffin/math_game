@@ -18,28 +18,45 @@ class Game
   # check it the player gave the right answer
   def isCorrect(num1, num2, op, answer)
     true if (op == "plus" && answer.to_i == num1.to_i + num2.to_i) || (op == "minus" && answer.to_i == num1.to_i - num2.to_i) 
-      
   end
-
+  
+  # correct answer response
   def correct
     puts "#{@currPlayer.name}: Too right you are!"
   end
 
+  # incorrect answer response
   def wrong 
     puts "#{@currPlayer.name}: Wrong, dummy!"
     @currPlayer.lives -= 1
   end
 
+  # print stats and switch current player
   def newTurn
     puts "P1: #{@p1.lives}/3 vs #{@p2.lives}/3"
     puts "-------NEW TURN-------"
     @currPlayer == @p1 ? @currPlayer = @p2 : @currPlayer = @p1
   end
 
+  # winner response
   def winner
     @currPlayer == @p1 ? winner = @p2 : winner = @p1
     puts "#{winner.name} wins with a score of #{winner.lives}/3"
-    puts "Good bye!!"
+    
+    puts "Another Round, Gamers? Y/N"
+    print ">"
+    again = $stdin.gets.chomp
+    
+    restart(again)
+  end
+
+  def restart(response)
+    if response.downcase == "y"
+      @p1.lives = 3
+      @p2.lives = 3
+    else 
+      puts "Good bye!!"
+    end
   end
 end
 
@@ -54,7 +71,7 @@ player2 = Player.new(name2)
 
 game = Game.new(player1, player2)
 
-while game.p1.lives > 0 && game.p1.lives > 0
+while game.p1.lives > 0 && game.p2.lives > 0
   num1 = rand(20)
   num2 = rand(20)
   op = ["plus", "minus"][rand(2)]
